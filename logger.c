@@ -22,21 +22,23 @@ const char* colors[] = {
     "\x1B[33m",
     "\x1B[31m",
 };
+
+char buff[2048];
+
 void log_func(LOGGING_LEVELS level,const char *TAG, const char *frmt, ...) {
     if(LOG_LEVEL > level) {
         return;
     } 
-    char *format = strdup(frmt);
-    strcat(format, "\n");
+    char *format = buff;
     va_list argp;
     va_start(argp, frmt);
     vsprintf(format,frmt, argp);
     va_end(argp);
     serial_write(colors[level]);
     serial_write(TAG);
-    serial_write(":");
+    serial_write(" : ");
     serial_write(format);
-    free(format);
+    serial_write("\n");
 }
 
 void logger_init(LOGGING_LEVELS level,p_log_func p_func) {
