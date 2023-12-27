@@ -7,11 +7,11 @@
 #define RESET 0
 
 typedef enum {
-    OFF,
-    DEBUG,
-    INFO,
-    WARNING,
-    ERROR
+    LOGGER_OFF,
+	LOGGER_DEBUG,
+	LOGGER_INFO,
+	LOGGER_WARNING,
+	LOGGER_ERROR
 } LOGGING_LEVELS;
 
 typedef void (*p_log_func)(const char *s);
@@ -38,9 +38,9 @@ void logger_init(LOGGING_LEVELS,p_log_func);
  */
 void log_func(LOGGING_LEVELS level,const char *TAG, const char *frmt, ...);
 
-#define log_debug(TAG,...) log_func(DEBUG,TAG,  __VA_ARGS__)
-#define log_info(TAG,...)  log_func(INFO,TAG,__VA_ARGS__)
-#define log_warn(TAG,...)  log_func(WARNING,TAG,__VA_ARGS__)
-#define log_error(TAG,...) log_func(ERROR,TAG,__VA_ARGS__)
+#define log_debug(TAG,...) log_func(LOGGER_DEBUG,TAG,  __VA_ARGS__)
+#define log_info(TAG,...)  log_func(LOGGER_INFO,TAG,__VA_ARGS__)
+#define log_warn(TAG,...)  log_func(LOGGER_WARNING,TAG,__VA_ARGS__)
+#define log_error(TAG,...) log_func(LOGGER_ERROR,TAG,__VA_ARGS__)
 
 #endif

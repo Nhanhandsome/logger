@@ -5,16 +5,16 @@
 #include <time.h>
 
 //Global variables to keep track of log files.
-static int LOG_LEVEL = OFF;
+static int LOG_LEVEL = LOGGER_OFF;
 // static bool write_to_file = false;
 static p_log_func serial_write;
-// static const char* log_level_strings[] = {
-//     "OFF",
-//     "[DEBUG]",
-//     "[INFO]",
-//     "[WARNING]",
-//     "[ERROR]",
-// };
+ static const char* log_level_strings[] = {
+     "OFF",
+     "[DEBUG]",
+     "[INFO]",
+     "[WARNING]",
+     "[ERROR]",
+ };
 const char* colors[] = {
     "\x1B[0m",
     "\x1B[34m",
@@ -30,15 +30,17 @@ void log_func(LOGGING_LEVELS level,const char *TAG, const char *frmt, ...) {
         return;
     } 
     char *format = buff;
+    sprintf(format,"%s%s%s : ",colors[level],log_level_strings[level],TAG);
     va_list argp;
     va_start(argp, frmt);
-    vsprintf(format,frmt, argp);
+    vsprintf(format+strlen(format),frmt, argp);
     va_end(argp);
-    serial_write(colors[level]);
-    serial_write(TAG);
-    serial_write(" : ");
+//    serial_write(colors[level]);
+//    serial_write(log_level_strings[level]);
+//    serial_write(TAG);
+//    serial_write(" : ");
+    format[strlen(format)] = '\n';
     serial_write(format);
-    serial_write("\n");
 }
 
 void logger_init(LOGGING_LEVELS level,p_log_func p_func) {
